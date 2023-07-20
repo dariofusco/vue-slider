@@ -17,11 +17,28 @@ const app = Vue.createApp({
             this.activeImageIndex = imageIndex;
         },
         nextBtn() {
-            this.activeImageIndex++
+            this.activeImageIndex++;
+            if (this.activeImageIndex >= this.images.length)
+                this.activeImageIndex = 0;
+            this.resetPlay();
         },
         prevBtn() {
-            this.activeImageIndex--
-        }
-    }
+            this.activeImageIndex--;
+            if (this.activeImageIndex < 0)
+                this.activeImageIndex = this.images.length - 1;
+            this.resetPlay();
+        },
+        play() {
+            this.timer = setInterval(function () {
+                app.nextBtn();
+            }, 3000);
+        },
+        resetPlay() {
+            clearInterval(this.timer);
+            this.play();
+        },
+    },
+    mounted() {
+        this.play();
+    },
 }).mount("#app")
-
